@@ -1,10 +1,10 @@
 (ns clrk-omdb.app
   (:require [clrk-omdb.core :as omdb]
-            [compojure.core :refer :all]
+            [compojure.core :refer [defroutes GET]]
             [compojure.route :as route]
             [ring.util.response :refer [response]]
             [ring.middleware.json :refer [wrap-json-response]]
-            [ring.middleware.defaults :refer :all]
+            [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.adapter.jetty :require [run-jetty]])
   (:gen-class))
 
