@@ -1,23 +1,27 @@
 (ns clrk-omdb.core
-  (:require [clj-http.client :as client]
-            [clojure.data.json :as json]
-            [clrk-omdb.cache :refer [cache-result]])
+  (:require [clrk-omdb.omdb :as omdb]
+            [clrk-omdb.db :as cdb]
+            [datomic.api :as d])
   (:gen-class :main true))
 
-(def omdb-url "http://www.omdbapi.com/")
-
-(defn omdb-get 
-  "Given a dictionary of GET parameters, returns the results of a call to OMDB"
-  [params]
-  (:body (client/get omdb-url {:as :auto, :query-params params})))
-
-(defn find-movie
-  "Find a movie by title"
-  [title]
-  (:Search (omdb-get {"s" title})))
+(defn q-id
+  "Get a movie entity from the db by imdbID"
+  [db imdbID]
+  (d/q '[:find ?e . 
+         :in $ ?i
+         :where [?e :movie/imdb-id ?i]]
+       db imdbID))
 
 (defn get-movie
-  "Get a movie by search result or imdbID"
-  [input]
-  (let [imdbID (if (:imdbID input) (:imdbID input) input)] 
-    (omdb-get {:i imdbID})))
+  "Get a movie from the database, or OMDB if it's not yet available"
+  [title]
+  (let [db (d/db cdb/conn)
+        omdb-info (first (omdb/find-movie title))
+        imdbID (:imdbID omdb-info)
+        movie-entity (q-id db imdbID)]
+    (if (nil? movie-entity)
+      ; import movie from omdb
+      (let [tx-info (cdb/add-movie imdbID (:Title omdb-info))]
+        (first (vals (:tempids @tx-info)))) 
+      movie-entity)))
+
