@@ -1,4 +1,4 @@
-(ns clrk-omdb.cache
+(ns clrk-clj.cache
   (:require [clojure.core.cache :as cache]))
 
 (def C (cache/fifo-cache-factory {} :threshold 128))

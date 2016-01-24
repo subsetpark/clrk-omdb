@@ -1,6 +1,6 @@
-(ns clrk-omdb.core
-  (:require [clrk-omdb.omdb :as omdb]
-            [clrk-omdb.db :as cdb]
+(ns clrk-clj.core
+  (:require [clrk-clj.omdb :as omdb]
+            [clrk-clj.db :as cdb]
             [datomic.api :as d])
   (:gen-class :main true))
 
@@ -12,10 +12,22 @@
          :where [?e :movie/imdb-id ?i]]
        db imdbID))
 
+(defn get-user-id-by-email
+  "Get a user entity from the db by email"
+  [db email]
+  (d/q '[:find ?e .
+         :in $ ?email
+         :where [?e :user/email ?email]]
+       db email))
+
+(defn get-user-by-email
+  [db email]
+  (d/pull db '[*] [:user/email email]))
+
 (defn get-movie
   "Get a movie from the database, or OMDB if it's not yet available"
   [title]
-  (let [db (d/db cdb/conn)
+  (let [db (cdb/db)
         omdb-info (first (omdb/find-movie title))
         imdbID (:imdbID omdb-info)
         movie-entity (q-id db imdbID)]

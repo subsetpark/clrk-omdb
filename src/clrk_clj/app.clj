@@ -1,5 +1,5 @@
-(ns clrk-omdb.app
-  (:require [clrk-omdb.core :as omdb]
+(ns clrk-clj.app
+  (:require [clrk-clj.omdb :as omdb]
             [compojure.core :refer [defroutes GET]]
             [compojure.route :as route]
             [ring.util.response :refer [response]]

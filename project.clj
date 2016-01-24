@@ -1,5 +1,5 @@
-(defproject clrk-omdb "0.1.0"
-  :description "Clojure OMDB Client"
+(defproject clrk-clj "0.1.0"
+  :description "Video Store Clerk as a Service"
   :url "http://github.com/subsetpark/omdb-clj"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
@@ -13,12 +13,13 @@
                  [ring/ring-defaults "0.1.5"]
                  [compojure "1.4.0"]
                  [com.datomic/datomic-pro "0.9.5344"]
+                 [io.rkn/conformity "0.4.0"]
                  ]
   :target-path "target/%s"
-  :main clrk-omdb.app
-  :aot [clrk-omdb.app]
+  :main clrk-clj.app
+  :aot [clrk-clj.app]
   :profiles {:uberjar {:aot :all}}
   :plugins [[lein-ring "0.9.7"]]  
-  :ring {:handler clrk-omdb.app/app}
+  :ring {:handler clrk-clj.app/app}
   :repositories {"my.datomic.com" {:url "https://my.datomic.com/repo"
                                    :creds :gpg}})

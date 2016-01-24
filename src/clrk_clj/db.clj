@@ -1,13 +1,10 @@
-(ns clrk-omdb.db
-  (:require [datomic.api :as d]
-            [clrk-omdb.omdb :as omdb])
-  (:use [clrk-omdb.schemas]))
+(ns clrk-clj.db
+  (:require [datomic.api :as d])
+  (:use [clrk-clj.conn]
+        [clrk-clj.schemas.schemas]
+        [clrk-clj.schemas.user-unique-migration]))
 
-(def uri "datomic:dev://localhost:4334/clrk")
-
-(d/create-database uri)
-(def conn (d/connect uri))
-(d/transact conn schemas)
+(defn db [] (d/db conn))
 
 (defn new-user 
   "Create a new user"
@@ -27,8 +24,7 @@
 
 (defn recommend-user 
   "Recommend a movie to a user"
-  [email imdbID]
-  (let [imdb ok
-        tx-data {:db/id [:user/email email]
-                 :user/recommended-movies imdbID}]
+  [user movie]
+  (let [tx-data {:db/id user
+                 :user/recommended-movies movie}]
     (d/transact conn [tx-data])))

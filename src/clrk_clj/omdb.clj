@@ -1,4 +1,4 @@
-(ns clrk-omdb.omdb
+(ns clrk-clj.omdb
   (:require [clj-http.client :as client]
             [clojure.data.json :as json]
             )
