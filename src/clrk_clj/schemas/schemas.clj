@@ -1,9 +1,6 @@
-(ns clrk-clj.schemas.schemas
-  (:require [datomic.api :as d]
-            [io.rkn.conformity :as c])
-  (:use [clrk-clj.conn]))
+(ns clrk-clj.schemas.schemas)
 
-(def initial-norms 
+(def norm 
   {:initial-migration 
    {:txes [[{:db/id #db/id[:db.part/db]
              :db/ident :db.part/movies
@@ -54,5 +51,3 @@
              :db/doc "Movie title"
              :db.install/_attribute :db.part/db}
             ]]}})
-
-(c/ensure-conforms conn initial-norms)

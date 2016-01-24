@@ -1,6 +1,7 @@
 (ns clrk-clj.app
   (:require [clrk-clj.omdb :as omdb]
             [clrk-clj.core :as core]
+            [clrk-clj.db :as db]
             [compojure.core :refer [defroutes GET]]
             [compojure.route :as route]
             [ring.util.response :refer [response]]
@@ -27,4 +28,5 @@
       (wrap-defaults api-defaults)))
 
 (defn -main [& args]
+  (db/migrate)
   (ring.adapter.jetty/run-jetty app {:port 8080}))
