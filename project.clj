@@ -19,7 +19,8 @@
   :main clrk-clj.app
   :aot [clrk-clj.app]
   :profiles {:uberjar {:aot :all}}
-  :plugins [[lein-ring "0.9.7"]]  
+  :plugins [[lein-ring "0.9.7"]
+            [lein-kibit "0.1.2"]]  
   :ring {:handler clrk-clj.app/app}
   :repositories {"my.datomic.com" {:url "https://my.datomic.com/repo"
                                    :creds :gpg}})

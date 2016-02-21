@@ -19,5 +19,5 @@
 (defn get-movie
   "Get a movie by search result or imdbID"
   [input]
-  (let [imdbID (if (:imdbID input) (:imdbID input) input)] 
+  (let [imdbID (or (:imdbID input) input)] 
     (omdb-get {:i imdbID})))
